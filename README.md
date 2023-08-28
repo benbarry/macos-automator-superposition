@@ -5,4 +5,4 @@ A silly Mac app inspired by Schrödinger's cat. When you drag files on to the ap
 Here is a video demonstration of the app:
 https://vimeo.com/858798755/ef81be0f23
 
-Made with macOS Automator, and judicious help from ChatGPT.
+Made with macOS Automator, and generous help from ChatGPT.
