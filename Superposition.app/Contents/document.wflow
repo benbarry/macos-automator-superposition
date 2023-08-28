@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>521.1</string>
+	<key>AMApplicationVersion</key>
+	<string>2.10</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
+				<key>ActionName</key>
+				<string>Run AppleScript</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>source</key>
+					<string>on run {input, parameters}
+
+    -- Calculate total file size
+    set totalSize to 0
+
+    repeat with anItem in input
+        set fileSize to (do shell script "du -sk " &amp; quoted form of POSIX path of anItem &amp; " | awk '{print $1}'")
+        set totalSize to totalSize + fileSize as integer
+    end repeat
+
+    -- Get file list
+    set fileList to ""
+    
+    repeat with anItem in input
+        set itemPath to POSIX path of anItem
+        set fileList to fileList &amp; " " &amp; quoted form of itemPath
+    end repeat
+    
+    -- Add additional 25 MB (in KB) to the total size
+    set additionalSize to 25000
+    set totalSize to totalSize + additionalSize
+
+    -- Prompt for password input
+    set passwordPrompt to display dialog "What would you like the password to be?" default answer "" buttons {"Cancel", "OK"} default button "OK" with hidden answer
+
+    if button returned of passwordPrompt is "OK" then
+        set enteredPassword to text returned of passwordPrompt
+
+        -- Prompt to verify the password
+        set verifyPrompt to display dialog "Verify the password:" default answer "" buttons {"Cancel", "OK"} default button "OK" with hidden answer
+        
+        if button returned of verifyPrompt is "OK" then
+            set verifiedPassword to text returned of verifyPrompt
+            
+            -- Check if passwords match
+            if enteredPassword = verifiedPassword then
+                set diskImagePassword to enteredPassword
+
+                -- Set the path for the new disk image
+                set diskImagePath to "/tmp/SchrödingerBox.dmg"
+                
+                -- Create a new disk image with the specified parameters
+                do shell script "printf " &amp; quoted form of diskImagePassword &amp; "|hdiutil create -size " &amp; totalSize &amp; "k -fs APFS -encryption AES-256 -stdinpass -volname SchrödingerBox " &amp; quoted form of diskImagePath
+                
+                set homeFolderPath to POSIX path of (path to home folder)
+                set mountedImagePath to homeFolderPath &amp; "SchrödingerBox.dmg"
+                do shell script "mv " &amp; quoted form of diskImagePath &amp; " " &amp; quoted form of mountedImagePath
+
+                -- Mount the disk image
+                set destinationPath to "/Volumes/SchrödingerBox/"
+                do shell script "printf " &amp; quoted form of diskImagePassword &amp; " | hdiutil attach -stdinpass " &amp; quoted form of mountedImagePath
+
+                -- Wait until the disk image is mounted
+                repeat
+                    delay 1
+                    set mountedVolumes to do shell script "ls /Volumes"
+                    if mountedVolumes contains "SchrödingerBox" then
+                        exit repeat
+                    end if
+                end repeat
+
+                -- Decide whether or not to kill the cat
+                set randomValue to (random number from 0 to 1)
+                if randomValue is 0 then
+                    do shell script "rsync -avR  " &amp; fileList &amp; " " &amp; quoted form of destinationPath
+                else
+                    set filePath to destinationPath &amp; "readme.txt"
+                    set fileRef to open for access filePath with write permission
+                    write "The cat is dead." to fileRef
+                    close access fileRef
+                end if
+                
+                -- Unmount the disk image
+                do shell script "hdiutil detach " &amp; quoted form of destinationPath
+                
+                display dialog "Your Schrödinger Box has been created." buttons {"OK"} default button "OK"
+                
+                return input
+            else
+                display dialog "Passwords do not match. Please try again."
+            end if
+        else
+            display dialog "Password entry canceled."
+        end if
+    else
+        display dialog "Password entry canceled."
+    end if
+    
+    return input
+end run
+</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.RunScript</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunScriptAction</string>
+				<key>InputUUID</key>
+				<string>00C148DB-18B9-465D-82B0-14A08546E011</string>
+				<key>Keywords</key>
+				<array>
+					<string>Run</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>F3BA903E-0850-40C9-A525-E3D8E976FB70</string>
+				<key>UUID</key>
+				<string>1802CE28-AE88-4665-A47E-EA6F0490BD68</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<integer>1</integer>
+				<key>location</key>
+				<string>309.000000:315.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict/>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.application</string>
+	</dict>
+</dict>
+</plist>
