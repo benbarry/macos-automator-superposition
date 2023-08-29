@@ -16,8 +16,8 @@ on run {input, parameters}
         set fileList to fileList & " " & quoted form of itemPath
     end repeat
     
-    -- Add additional 25 MB (in KB) to the total size
-    set additionalSize to 25000
+    -- Add additional 100 MB (in KB) to the total size
+    set additionalSize to 100000
     set totalSize to totalSize + additionalSize
 
     -- Prompt for password input
@@ -58,12 +58,14 @@ on run {input, parameters}
                         exit repeat
                     end if
                 end repeat
+                
+                -- Copy data to disk image
+                do shell script "rsync -avR  " & fileList & " " & quoted form of destinationPath
 
                 -- Decide whether or not to kill the cat
                 set randomValue to (random number from 0 to 1)
                 if randomValue is 0 then
-                    do shell script "rsync -avR  " & fileList & " " & quoted form of destinationPath
-                else
+                    do shell script "rm -r -f /Volumes/SchrödingerBox/*"
                     set filePath to destinationPath & "readme.txt"
                     set fileRef to open for access filePath with write permission
                     write "The cat is dead." to fileRef
@@ -72,7 +74,11 @@ on run {input, parameters}
                 
                 -- Unmount the disk image
                 do shell script "hdiutil detach " & quoted form of destinationPath
-                
+
+                tell application "Finder"
+		            open (homeFolderPath as POSIX file)
+	            end tell
+
                 display dialog "Your Schrödinger Box has been created." buttons {"OK"} default button "OK"
                 
                 return input
