@@ -80,8 +80,12 @@ on run {input, parameters}
 	            end tell
 
                 display dialog "Your Schrödinger Box has been created." buttons {"OK"} default button "OK"
+				
+				tell application "Superposition"
+    				quit
+				end tell
                 
-                return input
+                --return input
             else
                 display dialog "Passwords do not match. Please try again."
             end if
@@ -92,5 +96,5 @@ on run {input, parameters}
         display dialog "Password entry canceled."
     end if
     
-    return input
+    --return input
 end run
