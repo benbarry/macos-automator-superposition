@@ -10,11 +10,11 @@
 		</data>
 		<key>Resources/Assets.car</key>
 		<data>
-		KbDCryJ+Sfc0W4AGwv0ZdLUIWJ0=
+		vxTilFqAB+O3GmDzaaZ4sC4KOc8=
 		</data>
 		<key>Resources/InfoPlist.loctable</key>
 		<data>
-		GFHRfFTmEbAuZE1iyKibKmkU2+0=
+		71fUaDHmKoEjKlKkMLLNl4Pivgg=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -34,32 +34,32 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			KbDCryJ+Sfc0W4AGwv0ZdLUIWJ0=
+			vxTilFqAB+O3GmDzaaZ4sC4KOc8=
 			</data>
 			<key>hash2</key>
 			<data>
-			dcSMolg/Op+7U3KSuE2lSSMYrwLlccjFIFMfC/ZBzIE=
+			loZYiR+L7KjdFTLRaMr2+A0KvuTemvnXuTSxGTmfbes=
 			</data>
 		</dict>
 		<key>Resources/InfoPlist.loctable</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			GFHRfFTmEbAuZE1iyKibKmkU2+0=
+			71fUaDHmKoEjKlKkMLLNl4Pivgg=
 			</data>
 			<key>hash2</key>
 			<data>
-			UOUbWh1OGuLBljFDZpqdwARDPWymLLRuoV5MvojegUE=
+			tyC+7QMvGJZKI4nDnLOsiKfB+pRASNJx8BuCkMwIJj4=
 			</data>
 		</dict>
 		<key>document.wflow</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			kj37vhy0me/lqRJgKXdZSvTMksI=
+			e2J602iGPexBvoXnkONhyZCgnj0=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"1c304dff7ac207043b0717d0f9d40c1f84e3d11b" or cdhash H"923dfbbe1cb499efe5a912602977594af4cc92c2"</string>
+			<string>cdhash H"8043f7ba11a84e7b4630c314c1e93c8e3fbf1ae1" or cdhash H"7b627ad368863dec41be85e790e361c990a09e3d"</string>
 		</dict>
 	</dict>
 	<key>rules</key>

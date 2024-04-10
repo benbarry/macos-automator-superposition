@@ -59,17 +59,22 @@ on run {input, parameters}
                     end if
                 end repeat
                 
-                -- Copy data to disk image
-                do shell script "rsync -avR  " & fileList & " " & quoted form of destinationPath
-
                 -- Decide whether or not to kill the cat
                 set randomValue to (random number from 0 to 1)
-                if randomValue is 0 then
-                    do shell script "rm -r -f /Volumes/SchrödingerBox/*"
-                    set filePath to destinationPath & "readme.txt"
-                    set fileRef to open for access filePath with write permission
-                    write "The cat is dead." to fileRef
-                    close access fileRef
+                if randomValue is 1 then
+                    -- Copy data to disk image
+                    do shell script "rsync -avR  " & fileList & " " & quoted form of destinationPath
+                else
+                    -- Create a dummy file on the disk image named "The cat is dead."
+                    set totalSize to 0
+                    repeat with anItem in input
+                        set itemPath to POSIX path of anItem
+                        set fileSize to (do shell script "du -sk " & quoted form of itemPath & " | awk '{print $1}'")
+                        set totalSize to totalSize + fileSize
+                    end repeat
+                    set dummyFilePath to destinationPath & "The cat is dead."
+                    -- Create a dummy file with the total size filled with zero bytes
+                    do shell script "dd if=/dev/zero of=" & quoted form of dummyFilePath & " bs=1024 count=" & totalSize & " >/dev/null 2>&1"
                 end if
                 
                 -- Unmount the disk image
