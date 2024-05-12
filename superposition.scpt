@@ -16,8 +16,9 @@ on run {input, parameters}
         set fileList to fileList & " " & quoted form of itemPath
     end repeat
     
-    -- Add additional 100 MB (in KB) to the total size
-    set additionalSize to 100000
+    -- Add additional space to the total size
+    -- Calculate 1 percent of totalSize
+    set additionalSize to totalSize * 0.01
     set totalSize to totalSize + additionalSize
 
     -- Prompt for password input
